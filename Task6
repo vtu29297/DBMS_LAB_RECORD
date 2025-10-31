@@ -1,0 +1,124 @@
+TASK 6: Procedures, Function and Loops
+
+Aim: To write a programming using PL/SQL Procedures, Functions and loops on Number theory and business scenarios like.
+Write a PL/SQL block that calculates the average age of players and displays the result.
+Write a PL/SQL block that inserts a new player record into the Player table.
+To create a function that returns the total number of teams in a particular Cricket Board.
+To write a non-recursive PL/SQL procedure to retrieve even-numbered PlayerIDs registered for any tournament.
+
+Write a PL/SQL block that calculates the average age of players and displays the result.
+DECLARE
+    total_age NUMBER := 0;
+    num_players NUMBER := 0;
+    avg_age NUMBER := 0;
+BEGIN
+    -- Using a cursor to loop through all players
+    FOR player_rec IN (SELECT Age FROM Player) LOOP
+        total_age := total_age + player_rec.Age; -- Summing up the ages
+        num_players := num_players + 1; -- Counting the number of players
+    END LOOP;
+
+    -- Calculating the average age
+    IF num_players > 0 THEN
+        avg_age := total_age / num_players;
+    END IF;
+
+    -- Displaying the result
+    DBMS_OUTPUT.PUT_LINE('Total Players: ' || num_players);
+    DBMS_OUTPUT.PUT_LINE('Total Age: ' || total_age);
+    DBMS_OUTPUT.PUT_LINE('Average Age: ' || avg_age);
+END;
+Output:
+Total Players: 14
+Total Age: 342
+Average Age: 24.42
+Write a PL/SQL block that inserts a new player record into the Player table.
+DECLARE
+    v_PlayerID VARCHAR(6) := &PlayerID’; -- You can generate a unique PlayerID as needed
+    v_TeamID VARCHAR(6) := '&TEAMID'; -- Replace with the actual TeamID
+    v_FName VARCHAR(30) := '&Fname';
+    v_LName VARCHAR(30) := '&Lname';
+    v_Age NUMBER(5,2) := &age;
+    v_DateofBirth DATE := TO_DATE('&DOB', 'YYYY-MM-DD'); -- Replace with the actual DateofBirth
+    v_PlayingRole VARCHAR(25) := '&PlayingRole';
+    v_email VARCHAR(40) := '&email';
+    v_contact_no NUMBER := &phone; -- Replace with the actual contact number
+BEGIN
+    INSERT INTO Player (PlayerID, TeamID, FName, LName, Age, DateofBirth, PlayingRole, email, contact_no)
+    VALUES (v_PlayerID, v_TeamID, v_FName, v_LName, v_Age, v_DateofBirth, v_PlayingRole, v_email, v_contact_no);
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Player record inserted successfully.');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+        ROLLBACK;
+END;
+/
+Enter the PlayerID: 676
+Enter the TeamID: CCB01
+Enter the FName: Rahul
+Enter the LName: Sharma
+Enter the Age: 23
+Enter the DateofBirth: 17-07-1999
+Enter the PlayingRole: AllRounder
+Enter the email: rahulsharma@gmail.com
+Enter the Contact_no: 9797181815
+
+Player record inserted successfully.
+
+
+
+To create a function that returns the total number of teams in a particular Cricket Board.
+CREATE OR REPLACE FUNCTION GetTotalTeamsInBoard(BoardID VARCHAR2) RETURN NUMBER IS
+    v_TotalTeams NUMBER := 0;
+BEGIN
+    SELECT COUNT(*) INTO v_TotalTeams FROM Team WHERE BoardID = BoardID;
+    RETURN v_TotalTeams;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Handle the case when the board doesn't exist or has no teams
+        RETURN 0;
+    WHEN OTHERS THEN
+        -- Handle other exceptions as needed
+        RETURN -1; -- Return a negative value to indicate an error
+END GetTotalTeamsInBoard;
+/
+Function successfully created.
+SQL> 
+Declare
+number res;
+Begin
+res:= GetTotalTeamsInBoard(‘BID01’);
+DBMS_OUTPUT.PUT_LINE(‘No of teams:  ‘||res);
+END;
+/
+No of teams: 2
+To write a non-recursive PL/SQL procedure to retrieve even-numbered PlayerIDs registered for any tournament.
+CREATE OR REPLACE PROCEDURE GetEvenNumberedPlayerIDs IS
+BEGIN
+    FOR player_rec IN ( SELECT PlayerID FROM Player WHERE TO_NUMBER(PlayerID) MOD 2 = 0)     
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('Even-Numbered PlayerID: ' || player_rec.PlayerID);
+    END LOOP;
+END GetEvenNumberedPlayerIDs;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Result:
+Thus the PL/SQL Procedures, Functions and loops on Number theory and business scenarios experiment was successfully completed and results are verified.
