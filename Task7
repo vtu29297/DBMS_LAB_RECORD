@@ -1,0 +1,74 @@
+TASK 7: Triggers, Views and Exceptions
+
+Aim: To Conduct events, views, exceptions on CRUD operations for restricting phenomenon.
+a) To create a trigger in PL/SQL that automatically inserts a new record in the match_result table when a new record is inserted into the match table. 
+b) To create a view that displays the details of players along with their team details.
+c) To write a non-recursive PL/SQL procedure to retrieve even-numbered PlayerIDs registered for any tournament.
+
+To create a trigger in PL/SQL that automatically inserts a new record in the match_result table when a new record is inserted into the match table.
+
+CREATE OR REPLACE TRIGGER insert_match_result
+AFTER INSERT ON match
+FOR EACH ROW
+BEGIN
+    INSERT INTO match_result (MatchID, TeamID, Result)
+    VALUES (:new.MatchID, :new.TeamID, 'Pending'); -- Assuming a default value of 'Pending' for Result
+END;
+/
+
+To create a view that displays the details of players along with their team details.
+
+SQL> CREATE VIEW PlayerTeamDetails AS SELECT p.playerID, p.fname AS PlayerName, p.teamID, p.coach AS PlayerCoach, p.captain AS PlayerCaptain, (SELECT t.name FROM team t WHERE t.teamID = p.teamID) AS TeamName, (SELECT t.coach FROM team t WHERE t.teamID = p.teamID) AS TeamCoach, (SELECT t.captain FROM team t WHERE t.teamID = p.teamID) AS TeamCaptain FROM player p;
+
+SQL>  Select * from PlayerTeamDetails;
+
+To write a non-recursive PL/SQL procedure to retrieve even-numbered PlayerIDs registered for any tournament.
+CREATE OR REPLACE PROCEDURE GetEvenPlayerIDsForTournament(in_tournament_id NUMBER, out_even_player_ids SYS.ODCINUMBERLIST) AS 
+BEGIN
+    out_even_player_ids := SYS.ODCINUMBERLIST(); -- Initialize the collection
+
+    -- Populate the collection with even-numbered PlayerIDs for the specified tournament
+    FOR player_rec IN (SELECT PlayerID FROM Player WHERE TournamentID = in_tournament_id AND MOD(PlayerID, 2) = 0) LOOP
+        out_even_player_ids.EXTEND;
+        out_even_player_ids(out_even_player_ids.COUNT) := player_rec.PlayerID;
+    END LOOP;
+END;
+/
+
+DECLARE
+    tournament_id NUMBER := 123; -- Replace with the desired tournament ID
+    even_player_ids SYS.ODCINUMBERLIST;
+BEGIN
+    GetEvenPlayerIDsForTournament(tournament_id, even_player_ids);
+
+    -- You can now use the even_player_ids collection as needed.
+    -- For example, to print the even PlayerIDs:
+    FOR i IN 1..even_player_ids.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE('Even PlayerID: ' || even_player_ids(i));
+    END LOOP;
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Result: 
+Thus the Triggers, Views and Exceptions experiment was successfully completed results are verified.
