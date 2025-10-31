@@ -1,0 +1,254 @@
+TASK4:Using Functions in Queries and Writing Sub Queries
+
+Aim:To perform the advanced query processing and test its heuristics using designing of optimal correlated and nested sub queries such as finding summary statistics.
+To retrieve all team details, including the count of winning matches for each team
+To retrieve the total number of 'Tie' matches in a team-wise manner.
+To retrieve the team details who won the matches.
+To retrieve players and match details of players who are above 25 years old. 
+To retrieve the details of Team who have not played any matches.
+To retrieve the teamid, boardid, teamname, and playername for a particular playerid given.
+
+
+To retrieve all team details, including the count of winning matches for each team.
+
+SQL> SELECT t.TeamID, t.Name AS TeamName, t.Coach, t.Captain, COUNT(m.MatchID) AS WinningMatchCount FROM Team t LEFT JOIN Match m ON t.TeamID = substr(m.result,1,5) GROUP BY t.TeamID, t.Name, t.Coach, t.Captain;
+
+Output:
+
+TeamID
+TeamName
+Coach
+Captain
+WinningMatchCount
+
+CCB01
+ABS EXPRESS
+G.D.RAMESH
+SAMPATH KUMAR
+1
+
+CCB02
+AVG EXPRESS
+T.KARTHIK
+Y.JOHN
+0
+
+MCB01
+PANTHER
+SARAVANAN
+R.SUNILKUMAR
+0
+
+SCB01
+EAGLE
+SOMU
+SRI HARI
+0
+
+TCB01
+ANGRY BARD
+TOM BABU
+CINIL JOHN
+2
+
+TCB02
+TIGER ROCK
+S.KANNAN
+BEN GEORGE
+0
+
+TICB01
+KINGS
+D ANAND
+MATHAN
+0
+
+TRICB01
+ROCK
+K.PAUL
+K.MUTHU
+0
+
+TUCB01
+THUNDER
+D ALEX
+BARATHI
+0
+
+VCB01
+RAINBOW
+S.RAJESHKUMAR
+MANIMARAN
+0
+
+
+
+
+4.2 To retrieve the total number of 'Tie' matches in a team-wise manner.
+
+SQL> SELECT t.Name AS TeamName, COUNT(*) AS TotalTieMatches FROM Team t JOIN Match_result mt ON t.TeamID = mt.TeamID JOIN Match_result m ON mt.MatchID = m.MatchID WHERE m.Result = 'Tie' GROUP BY t.Name;
+
+TeamName
+TotalTieMatches
+
+ROCK
+1
+
+
+
+To retrieve the team details who won the matches.
+
+SQL> select * from team where teamID in (select mr.teamID from match_result mr left join team t on mr.teamId=t.teamID where mr.result='Win');
+
+TeamID
+BoardID
+Name
+Coach
+Captain
+
+CCB01
+BID01
+ABS EXPRESS
+G.D.RAMESH
+SAMPATH KUMAR
+
+TCB01
+BID02
+ANGRY BARD
+TOM BABU
+CINIL JOHN
+
+TRICB01
+BID04
+ROCK
+K.PAUL
+K.MUTHU
+
+
+To retrieve players and match details of players who are above 25 years old.
+
+SQL> SELECT p.PlayerID, p.FName AS PlayerName, p.Age, m.MatchID, m.match_Date, m.Time1, m.Result FROM Player p, match m where p.playerID in(select playerID from player where age>25);
+
+PlayerID
+PlayerName
+Age
+MatchID
+Match_Date
+Time1
+Result
+
+1
+Raj
+27
+M01
+22-JUN-2022
+1.3
+TCB01 - WIN
+
+1
+Raj
+27
+M02
+22-JUN-2022
+8.3
+CCB01 - WIN
+
+1
+Raj
+27
+M03
+24-JUN-2022
+8.3
+TCB01 - WIN
+
+1
+Raj
+27
+M04
+25-JUN-2022
+8.3
+TRICB01 - WIN
+
+1
+Raj
+27
+M05
+04-APR-2023
+7.3
+Tie
+
+
+
+To retrieve the details of Team who have not played any matches.
+
+SQL> select * from team where teamID not in(select teamid from match Union select playerId from match);
+TeamID
+BoardID
+Name
+Coach
+Captain
+
+VCB01
+BID03
+RAINBOW
+S.RAJESHKUMAR
+MANIMARAN
+
+MCB01
+BID05
+PANTHER
+SARAVANAN
+R.SUNILKUMAR
+
+TUCB01
+BID06
+THUNDER
+D ALEX
+BARATHI
+
+TICB01
+BID08
+KINGS
+D ANAND
+MATHAN
+
+
+
+To retrieve the teamid, boardid, teamname, and playername for a particular playerid given.
+
+SQL> SELECT t.teamid, t.boardid, t.name, p.fname FROM team t JOIN player p ON t.teamid = p.teamid WHERE p.playerid = '66';
+TeamID
+BoardID
+Name
+FName
+
+VCB01
+BID03
+RAINBOW
+Ganesh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Result:
+Thus the query using joins and writing subqueries has been done successfully.
