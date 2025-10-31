@@ -1,0 +1,134 @@
+TASK 3:Using Clauses, Operators and Functions in queries
+
+Aim:To perform the query processing on databases for different retrieval results of queries using DML, DRL operations using aggregate, date, string, indent functions, set clauses and operators.
+	To retrieve the location of a particular match conducted by its MatchID
+	To retrieve the Players detail whose name start with ‘A’.
+	Add a column Batting and Bowling in Player table.
+	To count the number of right-hand batsman in a team.
+	To display the CricketBoard details for the BoardIDs 'BID01', 'BID03', and 'BID06'.
+	To select the names and IDs of players who are left-hand bowlers.
+	To find the UmpireID of umpires who have not umpired any match.
+
+CricketBoard:
+BoardID	Name	Address	Contact_No
+BID01	Chennai Cricket Board	Chennai	9988776699
+BID02	Tiruvallur Cricket Board	Chennai	9977886699
+BID03	Viluppuram Cricket Board	Viluppuram	9966886699
+BID04	Trichy Cricket Board	Trichy	9955886699
+BID05	Madurai Cricket Board	Madurai	9944886699
+BID06	Tuticorin Cricket Board	Tuticorin	9933886699
+BID07	Selam Cricket Board	Selam	9922886699
+BID08	Tiruppur Cricket Board	Tiruppur	9911886699
+
+Team:
+TeamID	BoardID	Name	Coach	Captain
+CCB01	BID01	ABS EXPRESS	G.D.RAMESH	SAMPATH KUMAR
+CCB02	BID01	AVG EXPRESS	T.KARTHIK	Y.JOHN
+TCB01	BID02	ANGRY BARD	TOM BABU	CINIL JOHN
+TCB02	BID02	TIGER ROCK	S.KANNAN	BEN GEORGE
+TRICB01	BID04	ROCK	K.PAUL	K.MUTHU
+VCB01	BID03	RAINBOW	S.RAJESHKUMAR	MANIMARAN
+MCB01	BID05	PANTHER	SARAVANAN	R.SUNILKUMAR
+TUCB01	BID06	THUNDER	D ALEX	BARATHI
+SCB01	BID07	EAGLE	SOMU	SRI HARI
+TICB01	BID08	KINGS	D ANAND	MATHAN
+
+Player:
+PlayerID	TeamID	FName	LName	Age	DateofBirth	PlayingRole	email	contact_no	Batting	Bowling
+1	CCB01	Raj	N	27	29-JUN-1996	Bowler	rajn@gmail.com	9191910101	null	left-hand
+33	CCB01	Balaji	D	23	02-JAN-1999	Batsman	balajid@gmail.com	9191910031	right-hand	Null
+02	CCB02	Krishna	R	23	02-JAN-1999	Bowler	krishnar@gmail.com	9191930103	null	right-hand
+18	CCB02	Kishore	K	24	02-SEP-1998	ALL ROUNDER	kishorek@gmail.com	9291930105	left-hand	left-hand
+19	TCB01	Karthick	K	24	14-SEP-1998	Batsman	karthickk@gmail.com	9292930107	right-hand	Null
+62	TCB01	Amar	J	22	21-SEP-1998	Batsman	Amarj@gmail.com	9292930508	right-hand	Null
+102	TCB02	Akash	G	21	26-SEP-1999	Batsman	Amarj@gmail.com	9292930510	right-hand	Null
+12	TCB02	Premkumar	S	21	13-OCT-1999	Bowler	Premkumars@gmail.com	9592930517	null	right-hand
+01	VCB02	Prem	V	23	13-APR-1997	Bowler	Premkumars@gmail.com	9592950517	null	left-hand
+21	VCB02	Kali	J	21	11-APR-2002	Batsman	Kalij@gmail.com	9592950630	right-hand	Null
+61	VCB01	Kamalesh	A	22	21-JUN-2001	Batsman	Kamalesha@gmail.com	9592958730	right-hand	Null
+66	VCB01	Ganesh	V	24	21-JUN-1998	Batsman	Ganeshv@gmail.com	9592958790	right-hand	Null
+303	TRICB01	Arun	T	24	21-OCT-1998	Batsman	Ganeshv@gmail.com	9592958450	right-hand	Null
+313	TRICB01	Srinivasan	N	24	21-OCT-1998	Batsman	srinivasann@gmail.com	9992958450	right-hand	Null
+
+Match:
+MatchID	TeamID	TeamID	Match_Date	Time1	Result
+M01	CCB01	TCB01	22-JUN-2022	1.3	TCB01 - WIN
+M02	CCB02	TCB02	22-JUN-2022	8.3	CCB01 - WIN
+M03	TRIBCB02	TCB01	24-JUN-2022	8.3	TCB01 - WIN
+M04	TRIBCB01	TCB02	25-JUN-2022	8.3	TRICB01 - WIN
+
+Ground:
+
+GroundID	MatchID	Name	Location	Capacity
+GID01	M01	Nehru	Chennai	10000
+GID02	M02	GK	Coimbatore	10000
+GID03	M03	Sankar	Nellai	6000
+
+Umpire:
+UmpireID	FName	LName	Age	DateofBirth	Country	email	contact_no
+UID01	Venkatesh	T	45	21-JUN-1978	INDIA	venkatesh@gmail.com	9665571435
+UID02	Muthukumar	R	46	01-JUN-1979	INDIA	mutukumarr@gmail.com	9665571460
+UID03	Somu	K	42	01-JUN-1983	INDIA	somuk@gmail.com	9664471460
+
+Umpire_Umpired:
+UmpireID	MatchID	GroundID
+UID01	M01	GID01
+UID02	M03	GID02
+
+3.1: To retrieve the location of a particular match conducted by its MatchID
+SQL> SELECT LOCATION FROM GROUND WHERE MatchID=’M03’;
+Resul:
+Location
+Nellai
+
+3.2: To retrieve the Players detail whose name start with ‘A’.
+SQL> Select * from Player where FName like 'A%';
+PlayerID	TeamID	FName	LName	Age	DateofBirth	PlayingRole	Email	contact_no
+62	TCB01	Amar	J	22	21-SEP-1998	Batsman	Amarj@gmail.com	9292930508
+102	TCB02	Akash	G	21	26-SEP-1999	Batsman	Amarj@gmail.com	9292930510
+303	TRICB01	Arun	T	24	21-OCT-1998	Batsman	Ganeshv@gmail.com	9592958450
+
+3.3: Add a column Batting and Bowling in Player table.
+SQL>  Alter table player add Batting varchar(10);
+Table Altered
+SQL> Alter table player add Bowling varchar(10);
+Table Altered
+3.4: To count the number of right-hand batsman in a team.
+SQL> Select count(*) from Player where Batting='right-hand';
+
+Result:
+count(*)
+9
+
+
+3.5: To display the CricketBoard details for the BoardIDs 'BID01', 'BID03', and 'BID06'.
+
+SQL> Select * from CricketBoard where BoardID in('BID01','BID03','BID06');
+BoardID	Name	Address	Contact_No
+BID01	Chennai Cricket Board	Chennai	9988776699
+BID03	Viluppuram Cricket Board	Viluppuram	9966886699
+BID06	Tuticorin Cricket Board	Tuticorin	9933886699
+
+3.6: To select the names and IDs of players who are left-hand bowlers.
+SQL> Select playerID, FName, LName from player where Bowling='left-hand';
+PlayerID	FName	LName
+1	Raj	N
+18	Kishore	K
+01	Prem	V
+
+3.7: To find the UmpireID of umpires who have not umpired any match.
+SQL> select a.UmpireID from Umpire a where UmpireID NOT IN(select UmpireID from Umpire_Umpired);
+Result:
+UmpireID
+UID03
+
+
+
+
+
+
+
+
+
+Result:
+Thus the query processing on database for different retrieval result of query using Clauses, Operators and Functions in queries has been performed successfully
