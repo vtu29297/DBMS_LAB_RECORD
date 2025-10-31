@@ -1,0 +1,174 @@
+TASK2:Generating Design of other traditional database model
+
+Aim:Creating Hierarchical/Network model of the database by enhancing the sound abstract data by performing following tasks using forms of inheritance:
+2. a Identify the specificity of each relationship, find and form surplus relations.
+2. b Check is-a hierarchy/has-a hierarchy and performs generalization and/or specialization relationship.
+2. c Find the domain of the attribute and perform check constraint to the applicable.
+2. d Rename the relations.
+2. e Perform SQL Relations using DDL, DCL commands.
+
+2. a Identify the specificity of each relationship, find and form surplus relations.
+Relationship: Cricket Board manages Team (one-to-many)
+Specificity: One Cricket Board manages one or more Teams, but each Team is managed by only one Cricket Board.
+Surplus Relation: No surplus relation is needed for this relationship since it is already one-to-many.
+
+Relationship: Team has Player (many-to-one)
+Specificity: One Team can have many Players, but each Player belongs to only one Team.
+Surplus Relation: No surplus relation is needed for this relationship since it is already many-to-one.
+
+Relationship: Match involves Team (many-to-many)
+Specificity: One Match involves two Teams, and each Team can participate in multiple Matches.
+Surplus Relation: No surplus relation is needed for this relationship since it is already many-to-many.
+
+Relationship: Match has Umpire (many-to-many)
+Specificity: One Match can have multiple Umpires, and each Umpire can officiate multiple Matches.
+Surplus Relation: No surplus relation is needed for this relationship since it is already many-to-many.
+
+Based on the specificity analysis, all the relationships in the ER diagram are appropriately represented, and there are no surplus relations required for this particular model. Each relationship reflects the correct cardinality and participation constraints as per the description provided earlier.
+
+
+
+
+2.b Check is-a hierarchy/has -a hierarchy and performs generalization and/or specialization relationship.
+
+Generalization
+In the ER diagram for the Tamil Nadu Cricket Board (TNCA) described earlier, we can identify potential generalizations based on common attributes or relationships among entities. Here's an example of a possible generalization:
+Entities:
+Player
+Umpire
+Attributes:
+The above entities have common attributes like First_Name, Last_Name, Date_of_Birth, age, Contact_No, and Email.
+Potential Generalization:
+Create a superclass called "Person" to represent the common attributes shared by Player and Umpire. The "Person" entity would have the following attributes:
+Person_ID (primary key)
+First_Name
+Last_Name
+Date_of_Birth
+Age
+Contact_Number
+Email
+Subclasses:
+Player: Inherited attributes from "Person" and add specific attributes like Player_ID.
+Umpire: Inherited attributes from "Person" and add specific attributes like Umpire_ID.
+  
+  
+
+
+
+
+
+ 
+ 
+
+ 
+ 
+
+
+
+
+
+
+
+
+By using generalization, we can reduce data redundancy, improve data integrity, and simplify the structure of the ER diagram. This approach also allows for easier maintenance and updates, as changes made to the attributes shared by all "Person" entities will be automatically reflected in the subclasses.
+
+Specialization
+In the context of Entity-Relationship (ER) diagrams, specialization refers to the process of defining subtypes within an entity type. It allows, to represent entities that have specific attributes or relationships distinct from the general attributes or relationships of the parent entity.
+
+In the case of the Tamil Nadu Cricket Board Association, let's consider the specialization of the "Player" entity into two subtypes: "Batsman" and "Bowler." This specialization is based on the specific roles that players can have in cricket.
+
+Here's the modified ER diagram with the specialization:
+
+ 
+ 
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+
+2. c Find the domain of the attribute and perform check constraint to the applicable.
+
+For the purpose of illustration, I'll assume we are considering the "age" attribute of the "Player" entity from the ER diagram of the Tamil Nadu Cricket Association.
+
+Finding the domain of the "age" attribute:
+The "age" attribute typically represents the age of a player, and it should be a positive integer or a non-negative integer depending on how you handle the birth dates of players. For the sake of simplicity, let's assume it's a positive integer.
+
+Check constraint to enforce the domain:
+To enforce the domain on the "age" attribute and ensure that only valid values are allowed, we can create a check constraint in the database schema. The check constraint will specify the condition that the "age" attribute must satisfy.
+Suppose your database schema language is SQL, here's an example of how you can add the check constraint:
+
+SQL> ALTER TABLE Player ADD CONSTRAINT check_con CHECK (age>= 20);
+
+Table altered.
+
+2.d Rename the relations:
+
+Renaming a table (relation) in SQL can be accomplished using the ALTER TABLE statement with the RENAME TO clause. The specific syntax for renaming tables varies slightly between different database management systems.
+
+Here's the syntax for renaming a column in the Table:
+
+SQL> Alter table Umpire RENAME column contact_no TO phone_no;
+
+Table altered.
+
+SQL> DESC Umpire
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ UMPIREID                                           VARCHAR2(10)
+ FNAME                                              VARCHAR2(30)
+ LNAME                                              VARCHAR2(30)
+ AGE                                                NUMBER(5,2)
+ DATEOFBIRTH                                        DATE
+ COUNTRY                                            VARCHAR2(30)
+ EMAIL                                              VARCHAR2(40)
+ PHONE_NO                                           NUMBER
+
+
+2.e Perform SQL Relations using DDL, DCL commands.
+
+DCL stands for "Data Control Language," which is a subset of SQL (Structured Query Language) used to control access to data in a database. DCL commands are responsible for managing user permissions, granting privileges, and controlling data security within a database system. There are two primary DCL commands:
+
+1.	Grant
+2.	Revoke
+
+GRANT:
+The GRANT command is used to provide specific privileges to users or roles, allowing them to perform certain actions on database objects (e.g., tables, views, procedures). Privileges may include SELECT, INSERT, UPDATE, DELETE, EXECUTE, and more.
+SQL> create user Raj identified by kumar;
+User created.
+SQL> grant resource to raj;
+Grant succeeded.
+SQL> grant create session to raj;
+Grant succeeded.
+SQL> conn
+Enter user-name: raj
+Enter password:
+Connected.
+SQL> create table emp(eno number,ename varchar(10));
+Table created.
+SQL> conn system/manager
+Connected.
+SQL> grant all on Umpire to Raj;
+Grant succeeded.
+
+
+
+
+
+
+
+
+
+Result:
+Thus the Hierarchical model and Network model has been successfully created.
